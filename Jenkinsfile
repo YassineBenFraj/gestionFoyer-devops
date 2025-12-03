@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "yassinebenfraj/test-devops:latest"
-        GIT_REPO = "https://github.com/YassineBenFraj/gestionFoyer-devops.git"
         DOCKER_REGISTRY = "https://index.docker.io/v1/"
     }
 
@@ -15,11 +14,12 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: 'main', url: "${env.GIT_REPO}"
+                checkout scm
+                sh 'git clean -fdx'
             }
         }
 
-        stage('Clean & Build') {
+        stage('Build Project') {
             steps {
                 sh 'chmod +x mvnw'
                 sh './mvnw clean package -DskipTests'
@@ -29,17 +29,17 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh """
-                    docker build --pull --no-cache -t ${env.DOCKER_IMAGE} .
-                    """
+                    docker.build("${DOCKER_IMAGE}", "--pull --no-cache .")
                 }
             }
         }
 
         stage('Push Docker Image') {
             steps {
-                withDockerRegistry([credentialsId: 'DOCKER_CREDENTIALS_ID', url: "${env.DOCKER_REGISTRY}"]) {
-                    sh "docker push ${env.DOCKER_IMAGE}"
+                script {
+                    docker.withRegistry(DOCKER_REGISTRY, 'DOCKER_CREDENTIALS_ID') {
+                        docker.image("${DOCKER_IMAGE}").push('latest')
+                    }
                 }
             }
         }
@@ -47,7 +47,7 @@ pipeline {
 
     post {
         success {
-            echo "Pipeline terminé avec succès ! L'image Docker est prête et pushée."
+            echo "Pipeline terminé avec succès ! Image Docker pushée."
         }
         failure {
             echo "Pipeline échoué ! Vérifie les logs et les credentials Docker."
