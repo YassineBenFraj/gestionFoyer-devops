@@ -4,6 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "yassinebenfraj/test-devops:latest"
         GIT_REPO = "https://github.com/YassineBenFraj/gestionFoyer-devops.git"
+        DOCKER_REGISTRY = "https://index.docker.io/v1/"
     }
 
     triggers {
@@ -27,13 +28,17 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t ${env.DOCKER_IMAGE} ."
+                script {
+                    sh """
+                    docker build --pull --no-cache -t ${env.DOCKER_IMAGE} .
+                    """
+                }
             }
         }
 
         stage('Push Docker Image') {
             steps {
-                withDockerRegistry([credentialsId: 'DOCKER_CREDENTIALS_ID', url: '']) {
+                withDockerRegistry([credentialsId: 'DOCKER_CREDENTIALS_ID', url: "${env.DOCKER_REGISTRY}"]) {
                     sh "docker push ${env.DOCKER_IMAGE}"
                 }
             }
@@ -42,10 +47,10 @@ pipeline {
 
     post {
         success {
-            echo "Pipeline terminé avec succès ! L'image Docker est prête."
+            echo "Pipeline terminé avec succès ! L'image Docker est prête et pushée."
         }
         failure {
-            echo "Pipeline échoué !"
+            echo "Pipeline échoué ! Vérifie les logs et les credentials Docker."
         }
     }
 }
