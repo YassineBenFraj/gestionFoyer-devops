@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "yassinebenfraj/test-devops:latest"
+        DOCKER_IMAGE = "yassinebenfraj/test-devops"
         DOCKER_REGISTRY = "https://index.docker.io/v1/"
     }
 
@@ -29,7 +29,9 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${DOCKER_IMAGE}", "--pull --no-cache .")
+                    sh """
+                        docker build --pull --no-cache -t ${DOCKER_IMAGE}:latest .
+                    """
                 }
             }
         }
@@ -38,7 +40,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry(DOCKER_REGISTRY, 'DOCKER_CREDENTIALS_ID') {
-                        docker.image("${DOCKER_IMAGE}").push('latest')
+                        sh "docker push ${DOCKER_IMAGE}:latest"
                     }
                 }
             }
