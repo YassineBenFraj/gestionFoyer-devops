@@ -12,9 +12,4 @@ public interface ReservationService {
     public void deleteReservation(Long idReservation);
     public Reservation getReservation(Long idReservation);
     List<Reservation> getAllReservations();
-
-    Reservation ajouterReservation(long idBloc, long cinEtudiant);
-    Reservation annulerReservation(long cinEtudiant);
-    List<Reservation> getReservationParAnneeUniversitaireEtNomUniversite(Date anneeUniversite, String nomUniversite);
-
 }

@@ -9,9 +9,4 @@ import java.util.List;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation,Long> {
-    List<Reservation> findByChambre_Bloc_Foyer_Universite_NomUniversiteAndAnneeUniversitaireBetween(
-            String nomUniversite,
-            Date startOfYear,
-            Date endOfYear
-    );
 }

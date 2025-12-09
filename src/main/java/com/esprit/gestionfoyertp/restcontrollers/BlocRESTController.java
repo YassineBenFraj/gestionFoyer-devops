@@ -50,13 +50,4 @@ public class BlocRESTController {
     public void deleteBloc(@PathVariable int idBloc) {
         blocService.deleteBlocById(idBloc);
     }
-
-    @Operation(summary = "Affecter des chambres à un bloc")
-    @PutMapping("/affecterChambres")
-    public Bloc affecterChambresABloc(
-            @RequestParam List<Long> numChambreIds,
-            @RequestParam long idBloc) {
-        return blocService.affecterChambresABloc(numChambreIds, idBloc);
-    }
-
 }

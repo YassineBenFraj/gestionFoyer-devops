@@ -12,7 +12,4 @@ public interface BlocService {
     public void deleteBlocById(int idBloc);
     Bloc getBlocById(int idBloc);
     List<Bloc> getAllBlocs();
-
-    public Bloc affecterChambresABloc(List<Long> numChambreIds, long idBloc);
-
 }

@@ -11,7 +11,4 @@ public interface FoyerService {
     public void deleteFoyerById(Long idFoyer);
     public Foyer getFoyer(Long idFoyer);
     List<Foyer> getAllFoyers();
-
-    Foyer ajouterFoyerEtAffecterAUniversite(Foyer foyer, long idUniversite);
-
 }

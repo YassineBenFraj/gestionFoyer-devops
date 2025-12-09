@@ -53,26 +53,4 @@ public class ReservationRESTController {
     public void deleteReservation(@PathVariable("idReservation") Long idReservation) {
         reservationService.deleteReservation(idReservation);
     }
-
-    @Operation(summary = "Ajouter une réservation pour un étudiant dans un bloc spécifique")
-    @PostMapping("/ajouter")
-    public Reservation ajouterReservation(
-            @RequestParam long idBloc,
-            @RequestParam long cinEtudiant) {
-        return reservationService.ajouterReservation(idBloc, cinEtudiant);
-    }
-
-    @Operation(summary = "Annuler une réservation par le CIN de l'étudiant")
-    @PutMapping("/annulerReservation/{cin}")
-    public Reservation annuler(@PathVariable long cin) {
-        return reservationService.annulerReservation(cin);
-    }
-
-    @Operation(summary = "Récupérer les réservations par année universitaire et nom d'université")
-    @GetMapping("/parAnneeUniversite")
-    public List<Reservation> getReservationsParAnneeEtUniversite(
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date annee,
-            @RequestParam String nomUniversite) {
-        return reservationService.getReservationParAnneeUniversitaireEtNomUniversite(annee, nomUniversite);
-    }
 }

@@ -51,27 +51,4 @@ public class ChambreRESTController {
     public void deleteChambreById(@PathVariable("idChambre") Long idChambre){
         chambreService.deleteChambreById(idChambre);
     }
-
-    @Operation(summary = "Récupérer les chambres par nom d'université")
-    @GetMapping("/parUniversite/{nom}")
-    public List<Chambre> getChambresParNomUniversite(@PathVariable("nom") String nomUniversite) {
-        return chambreService.getChambresParNomUniversite(nomUniversite);
-    }
-
-    @Operation(summary = "Récupérer les chambres d’un bloc selon un type")
-    @GetMapping("/parBlocEtType/{idBloc}/{type}")
-    public List<Chambre> getChambresParBlocEtType(
-            @PathVariable long idBloc,
-            @PathVariable TypeChambre type) {
-
-        return chambreService.getChambresParBlocEtType(idBloc, type);
-    }
-
-    @Operation(summary = "Récupérer les chambres non réservées d'une université selon un type de chambre")
-    @GetMapping("/nonReserve")
-    public List<Chambre> getChambresNonReserve(
-            @RequestParam String nomUniversite,
-            @RequestParam TypeChambre type) {
-        return chambreService.getChambresNonReserveParNomUniversiteEtTypeChambre(nomUniversite, type);
-    }
 }

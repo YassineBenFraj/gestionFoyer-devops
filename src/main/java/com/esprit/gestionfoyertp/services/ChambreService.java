@@ -12,9 +12,4 @@ public interface ChambreService {
     void deleteChambreById(Long idChambre);
     Chambre getChambreById(Long idChambre);
     List<Chambre> getAllChambres();
-
-    List<Chambre> getChambresParNomUniversite(String nomUniversite);
-    List<Chambre> getChambresParBlocEtType(long idBloc, TypeChambre typeC);
-    List<Chambre> getChambresNonReserveParNomUniversiteEtTypeChambre(String nomUniversite, TypeChambre type);
-
 }

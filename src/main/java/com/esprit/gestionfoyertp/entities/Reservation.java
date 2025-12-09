@@ -27,7 +27,4 @@ public class Reservation {
     @JoinColumn(name = "chambre_id")
     private Chambre chambre;
 
-    @ManyToMany
-    @JsonManagedReference
-    private List<Etudiant> etudiants;
 }

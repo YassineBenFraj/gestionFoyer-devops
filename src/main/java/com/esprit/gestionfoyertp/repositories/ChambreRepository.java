@@ -11,8 +11,4 @@ import java.util.List;
 
 @Repository
 public interface ChambreRepository extends JpaRepository<Chambre,Long> {
-    List<Chambre> findByBlocFoyerUniversiteNomUniversite(String nomUniversite);
-    List<Chambre> findByBlocIdBlocAndTypeC(long idBloc, TypeChambre typeC);
-    List<Chambre> findByTypeCAndBloc_Foyer_Universite_NomUniversiteAndReservations_EstValideFalse(TypeChambre type, String nomUniversite);
-
 }

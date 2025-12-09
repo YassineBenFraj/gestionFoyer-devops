@@ -10,6 +10,4 @@ import java.util.List;
 
 @Repository
 public interface FoyerRepository extends JpaRepository<Foyer, Long> {
-    List<Foyer> findByBlocsNomBlocAndBlocsCapaciteBloc(String nomBloc, long capaciteBloc);
-
 }

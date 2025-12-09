@@ -49,13 +49,4 @@ public class FoyerRESTController {
     public void deleteFoyer(@PathVariable("idFoyer") Long idFoyer) {
         foyerService.deleteFoyerById(idFoyer);
     }
-
-    @Operation(summary = "Ajouter un foyer avec ses blocs et l'affecter à une université")
-    @PostMapping("/ajouterAvecUniversite")
-    public Foyer ajouterFoyerEtAffecterAUniversite(
-            @RequestBody Foyer foyer,
-            @RequestParam long idUniversite) {
-        return foyerService.ajouterFoyerEtAffecterAUniversite(foyer, idUniversite);
-    }
-
 }
