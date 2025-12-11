@@ -30,7 +30,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                        docker build --pull --no-cache -t ${DOCKER_IMAGE}:latest .
+                        docker build -t ${DOCKER_IMAGE}:latest .
                     """
                 }
             }
