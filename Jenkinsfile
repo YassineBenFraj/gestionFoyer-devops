@@ -28,9 +28,12 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('sonarQube') {
-                    sh './mvnw clean verify sonar:sonar -Dsonar.projectKey=test-devops'
-                }
+                sh """
+                    ./mvnw clean verify sonar:sonar \
+                    -Dsonar.projectKey=test-devops \
+                    -Dsonar.host.url=http://192.168.1.182:9000 \
+                    -Dsonar.login=sonar-token
+                """
             }
         }
 
