@@ -4,7 +4,6 @@ pipeline {
     environment {
         DOCKER_IMAGE = "yassinebenfraj/test-devops"
         DOCKER_REGISTRY = "https://index.docker.io/v1/"
-        SONAR_TOKEN = credentials('sonar-token')
     }
 
     triggers {
@@ -29,12 +28,9 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                sh """
-                ./mvnw clean verify sonar:sonar \
-                -Dsonar.projectKey=test-devops \
-                -Dsonar.host.url=http://192.168.252.131:9000 \
-                -Dsonar.login=${SONAR_TOKEN}
-                """
+                withSonarQubeEnv('sonarQube') {
+                    sh './mvnw clean verify sonar:sonar -Dsonar.projectKey=test-devops'
+                }
             }
         }
 
