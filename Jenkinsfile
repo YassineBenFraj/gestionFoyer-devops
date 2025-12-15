@@ -19,6 +19,13 @@ pipeline {
             }
         }
 
+        stage('Build Project') {
+            steps {
+                sh 'chmod +x mvnw'
+                sh './mvnw clean package -DskipTests'
+            }
+        }
+
     stage('SonarQube Analysis') {
         steps {
             sh """
@@ -29,13 +36,6 @@ pipeline {
                 """
         }
     }
-
-        stage('Build Project') {
-            steps {
-                sh 'chmod +x mvnw'
-                sh './mvnw clean package -DskipTests'
-            }
-        }
 
         stage('Build Docker Image') {
             steps {
