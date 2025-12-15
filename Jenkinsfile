@@ -11,11 +11,27 @@ pipeline {
     }
 
     stages {
-
         stage('Checkout') {
             steps {
                 checkout scm
                 sh 'git clean -fdx'
+            }
+        }
+
+        stage('Setup Test Environment') {
+            steps {
+                sh '''
+                    # S'assurer que H2 est utilisé pour les tests
+                    mkdir -p src/test/resources
+
+                    cat > src/test/resources/application.properties << 'EOF'
+                    spring.datasource.url=jdbc:h2:mem:testdb
+                    spring.datasource.driver-class-name=org.h2.Driver
+                    spring.datasource.username=sa
+                    spring.datasource.password=
+                    spring.jpa.hibernate.ddl-auto=create-drop
+                    EOF
+                '''
             }
         }
 
@@ -26,16 +42,16 @@ pipeline {
             }
         }
 
-    stage('SonarQube Analysis') {
-        steps {
-            sh """
-                ./mvnw sonar:sonar \
-                -Dsonar.projectKey=test-devops \
-                -Dsonar.host.url=http://192.168.1.109:9000 \
-                -Dsonar.login=sonar-token
+        stage('SonarQube Analysis') {
+            steps {
+                sh """
+                    ./mvnw sonar:sonar \
+                    -Dsonar.projectKey=test-devops \
+                    -Dsonar.host.url=http://192.168.1.109:9000 \
+                    -Dsonar.login=sonar-token
                 """
+            }
         }
-    }
 
         stage('Build Docker Image') {
             steps {
