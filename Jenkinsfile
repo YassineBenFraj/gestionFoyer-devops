@@ -44,12 +44,12 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                sh """
-                    ./mvnw sonar:sonar \
-                    -Dsonar.projectKey=test-devops \
-                    -Dsonar.host.url=http://192.168.1.109:9000 \
-                    -Dsonar.login=sonar-token
-                """
+                withSonarQubeEnv('sonarQube') {
+                    sh """
+                        ./mvnw sonar:sonar \
+                        -Dsonar.projectKey=test-devops
+                    """
+                }
             }
         }
 
