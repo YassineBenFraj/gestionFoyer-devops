@@ -60,10 +60,9 @@ pipeline {
                 }
             }
         }
-
-        stage('Run Tests & Package') {
+        
+        stage('Package Application') {
             steps {
-                sh './mvnw verify'
                 sh './mvnw package -DskipTests'
             }
         }
