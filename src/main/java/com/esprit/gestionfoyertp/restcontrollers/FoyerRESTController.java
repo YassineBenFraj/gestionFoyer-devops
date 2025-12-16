@@ -25,28 +25,4 @@ public class FoyerRESTController {
         return foyerService.addFoyer(foyer);
     }
 
-    @Operation(summary = "Mettre à jour un foyer existant")
-    @RequestMapping(value = "/update/{idFoyer}", method = RequestMethod.PUT)
-    public Foyer updateFoyer(@PathVariable("idFoyer") Long idFoyer, @RequestBody Foyer foyer) {
-        foyer.setIdFoyer(idFoyer);
-        return foyerService.updateFoyer(foyer);
-    }
-
-    @Operation(summary = "Récupérer tous les foyers")
-    @RequestMapping(value = "/getAll", method = RequestMethod.GET)
-    public List<Foyer> getAllFoyers() {
-        return foyerService.getAllFoyers();
-    }
-
-    @Operation(summary = "Récupérer un foyer par id")
-    @RequestMapping(value = "/getFoyerById/{idFoyer}", method = RequestMethod.GET)
-    public Foyer getFoyer(@PathVariable("idFoyer") Long idFoyer) {
-        return foyerService.getFoyer(idFoyer);
-    }
-
-    @Operation(summary = "Supprimer un foyer par id")
-    @RequestMapping(value = "/{idFoyer}", method = RequestMethod.DELETE)
-    public void deleteFoyer(@PathVariable("idFoyer") Long idFoyer) {
-        foyerService.deleteFoyerById(idFoyer);
-    }
 }

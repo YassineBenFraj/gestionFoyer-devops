@@ -27,21 +27,6 @@ public class BlocServiceImpl implements BlocService {
     }
 
     @Override
-    public Bloc updateBloc(Bloc bloc) {
-        return blocRepository.save(bloc);
-    }
-
-    @Override
-    public void deleteBlocById(int idBloc) {
-        blocRepository.deleteById(idBloc);
-    }
-
-    @Override
-    public Bloc getBlocById(int id) {
-        return blocRepository.findById(id).get();
-    }
-
-    @Override
     public List<Bloc> getAllBlocs() {
         return blocRepository.findAll();
     }

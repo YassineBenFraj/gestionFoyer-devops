@@ -21,26 +21,4 @@ public class FoyerServiceImpl implements FoyerService {
     public Foyer addFoyer(Foyer foyer) {
         return foyerRepository.save(foyer);
     }
-
-    @Override
-    public Foyer updateFoyer(Foyer foyer) {
-        return foyerRepository.save(foyer);
-    }
-
-
-    @Override
-    public void deleteFoyerById(Long idFoyer) {
-        foyerRepository.deleteById(idFoyer);
-    }
-
-    @Override
-    public Foyer getFoyer(Long idFoyer) {
-        return foyerRepository.findById(idFoyer).get();
-    }
-
-    @Override
-    public List<Foyer> getAllFoyers() {
-        return foyerRepository.findAll();
-    }
-
 }

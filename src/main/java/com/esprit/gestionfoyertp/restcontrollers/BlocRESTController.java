@@ -26,28 +26,10 @@ public class BlocRESTController {
         return blocService.addBloc(bloc);
     }
 
-    @Operation(summary = "Mettre à jour un bloc")
-    @PutMapping("/update/{idBloc}")
-    public Bloc updateBloc(@PathVariable int idBloc, @RequestBody Bloc bloc) {
-        bloc.setIdBloc(idBloc);
-        return blocService.updateBloc(bloc);
-    }
-
     @Operation(summary = "Récupérer tous les blocs")
     @GetMapping("/getAll")
     public List<Bloc> getAll() {
         return blocService.getAllBlocs();
     }
 
-    @Operation(summary = "Récupérer un bloc par id")
-    @GetMapping("/getBlocById/{idBloc}")
-    public Bloc getBlocById(@PathVariable int idBloc) {
-        return blocService.getBlocById(idBloc);
-    }
-
-    @Operation(summary = "Supprimer un bloc par id")
-    @DeleteMapping("/{idBloc}")
-    public void deleteBloc(@PathVariable int idBloc) {
-        blocService.deleteBlocById(idBloc);
-    }
 }

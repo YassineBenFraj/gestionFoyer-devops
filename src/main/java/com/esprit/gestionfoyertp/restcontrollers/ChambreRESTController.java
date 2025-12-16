@@ -2,15 +2,12 @@ package com.esprit.gestionfoyertp.restcontrollers;
 
 
 import com.esprit.gestionfoyertp.entities.Chambre;
-import com.esprit.gestionfoyertp.entities.TypeChambre;
 import com.esprit.gestionfoyertp.services.ChambreService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -32,23 +29,5 @@ public class ChambreRESTController {
     public Chambre updateChambre(@PathVariable("idChambre") Long idChambre, @RequestBody Chambre chambre){
         chambre.setIdChambre(idChambre);
         return chambreService.updateChambre(chambre);
-    }
-
-    @Operation(summary = "Récupérer toutes les chambres")
-    @RequestMapping(value = "/getAll",method = RequestMethod.GET)
-    public List<Chambre> getAllChambres() {
-        return chambreService.getAllChambres();
-    }
-
-    @Operation(summary = "Récupérer une chambre par id")
-    @RequestMapping(value = "/getChambreById/{idChambre}",method = RequestMethod.GET)
-    public Chambre getChambreById(@PathVariable("idChambre") Long idChambre) {
-        return chambreService.getChambreById(idChambre);
-    }
-
-    @Operation(summary = "Supprimer une chambre par id")
-    @RequestMapping(value = "/{idChambre}" , method = RequestMethod.DELETE)
-    public void deleteChambreById(@PathVariable("idChambre") Long idChambre){
-        chambreService.deleteChambreById(idChambre);
     }
 }

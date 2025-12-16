@@ -19,17 +19,10 @@ public class Chambre {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idChambre;
     private long numChambre;
-    @Enumerated(EnumType.STRING)
-    private TypeChambre typeC;
-
 
 
     @ManyToOne
     @JoinColumn(name = "bloc_id")
     @JsonIgnoreProperties("chambres")
     private Bloc bloc;
-
-    @OneToMany(mappedBy = "chambre", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("chambre")
-    private List<Reservation> reservations = new ArrayList<>();
 }
