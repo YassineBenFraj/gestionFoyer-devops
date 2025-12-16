@@ -6,11 +6,6 @@ pipeline {
         DOCKER_REGISTRY = "https://index.docker.io/v1/"
     }
 
-    options {
-        timeout(time: 30, unit: 'MINUTES')
-        retry(1)  // Relance une fois en cas d'échec
-    }
-
     triggers {
         pollSCM('* * * * *')
     }
@@ -111,17 +106,6 @@ pipeline {
             echo "✅ Pipeline terminé avec succès ! SonarQube analysis completed."
             sh '''
                 echo "SonarQube report available at: http://192.168.1.109:9000/dashboard?id=test-devops"
-            '''
-        }
-        failure {
-            echo "❌ Pipeline échoué !"
-            sh '''
-                echo "=== Quick Debug ==="
-                echo "1. Check SonarQube:"
-                curl -s http://192.168.1.109:9000/api/system/status | grep -o '"status":"[^"]*"' || echo "Cannot reach SonarQube"
-                echo ""
-                echo "2. Check Docker:"
-                docker ps | grep sonarqube || echo "SonarQube container not running"
             '''
         }
     }
