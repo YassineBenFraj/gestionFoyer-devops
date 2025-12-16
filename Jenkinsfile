@@ -6,6 +6,11 @@ pipeline {
         DOCKER_REGISTRY = "https://index.docker.io/v1/"
     }
 
+    options {
+        timeout(time: 30, unit: 'MINUTES')
+        retry(1)  // Relance une fois en cas d'échec
+    }
+
     triggers {
         pollSCM('* * * * *')
     }
@@ -21,9 +26,7 @@ pipeline {
         stage('Setup Test Environment') {
             steps {
                 sh '''
-                    # S'assurer que H2 est utilisé pour les tests
                     mkdir -p src/test/resources
-
                     cat > src/test/resources/application.properties << 'EOF'
                     spring.datasource.url=jdbc:h2:mem:testdb
                     spring.datasource.driver-class-name=org.h2.Driver
@@ -38,18 +41,35 @@ pipeline {
         stage('Build Project') {
             steps {
                 sh 'chmod +x mvnw'
-                sh './mvnw clean verify'
+                sh './mvnw clean compile -DskipTests'
             }
         }
 
         stage('SonarQube Analysis') {
+            environment {
+                SONAR_TOKEN = credentials('sonar-test')
+            }
             steps {
-                withSonarQubeEnv('sonarQube') {
+                script {
+                    echo "Using SonarQube token: ${SONAR_TOKEN}"
                     sh """
                         ./mvnw sonar:sonar \
-                        -Dsonar.projectKey=test-devops
+                        -Dsonar.projectKey=test-devops \
+                        -Dsonar.host.url=http://192.168.1.109:9000 \
+                        -Dsonar.login=${SONAR_TOKEN} \
+                        -Dsonar.ws.timeout=600 \
+                        -Dsonar.scm.disabled=true \
+                        -Dsonar.java.binaries=target/classes \
+                        -Dsonar.sourceEncoding=UTF-8
                     """
                 }
+            }
+        }
+
+        stage('Run Tests & Package') {
+            steps {
+                sh './mvnw verify'
+                sh './mvnw package -DskipTests'
             }
         }
 
@@ -88,10 +108,21 @@ pipeline {
 
     post {
         success {
-            echo "Pipeline terminé avec succès ! Image Docker pushée."
+            echo "✅ Pipeline terminé avec succès ! SonarQube analysis completed."
+            sh '''
+                echo "SonarQube report available at: http://192.168.1.109:9000/dashboard?id=test-devops"
+            '''
         }
         failure {
-            echo "Pipeline échoué ! Vérifie les logs et les credentials Docker."
+            echo "❌ Pipeline échoué !"
+            sh '''
+                echo "=== Quick Debug ==="
+                echo "1. Check SonarQube:"
+                curl -s http://192.168.1.109:9000/api/system/status | grep -o '"status":"[^"]*"' || echo "Cannot reach SonarQube"
+                echo ""
+                echo "2. Check Docker:"
+                docker ps | grep sonarqube || echo "SonarQube container not running"
+            '''
         }
     }
 }
